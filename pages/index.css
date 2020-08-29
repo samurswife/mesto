@@ -2,5 +2,12 @@
 @import url("../vendor/normalize.css");
 @import url("../vendor/fonts.css");
 
+/*CENTER*/
+@import url("../blocks/center/center.css");
+
 /*PAGE*/
 @import url("../blocks/page/page.css");
+
+/*HEADER*/
+@import url("../blocks/header/header.css");
+@import url("../blocks/header/__logo/header__logo.css");
