@@ -1,0 +1,16 @@
+.edit-form {
+  background-color: #ffffff;
+  max-width: 430px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 36px;
+}
+
+@media only screen and (max-width: 650px) {
+  .edit-form {
+    max-width: 90%;
+    margin: 0 15px;
+  }
+}

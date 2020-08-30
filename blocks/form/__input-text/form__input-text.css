@@ -1,0 +1,40 @@
+.form__input-text {
+  margin: 0 0 30px;
+  padding: 0 0 13px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+.form__input-text::placeholder {
+  font-size: 14px;
+  line-height: 1.2;
+  color: #000000;
+}
+
+.form__input-text::-webkit-input-placeholder {
+  font-size: 14px;
+  line-height: 1.2;
+  color: #000000;
+}
+
+.form__input-text::-moz-placeholder {
+  font-size: 14px;
+  line-height: 1.2;
+  color: #000000;
+}
+
+.form__input-text::-ms-input-placeholder {
+  font-size: 14px;
+  line-height: 1.2;
+  color: #000000;
+}
+
+.form__input-text:nth-of-type(2) {
+  margin: 0 0 48px;
+}
+
+.form__input-text:focus {
+  outline: none;
+}
