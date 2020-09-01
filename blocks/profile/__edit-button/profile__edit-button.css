@@ -11,9 +11,14 @@
   margin: 7px 0 0 15px;
 }
 
+.profile__edit-button:focus {
+  outline: none;
+}
+
 .profile__edit-button:hover {
   opacity: 0.6;
   transition: opacity ease 0.5s;
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 425px) {
