@@ -13,11 +13,11 @@ formNameInput.value = profileName.textContent;
 formAboutInput.value = profileAbout.textContent;
 
 function showPopup(){
-  popup.classList.toggle("popup_opened");
+  popup.classList.add("popup_opened");
 }
 
 function closePopup(){
-  popup.classList.toggle("popup_opened");
+  popup.classList.remove("popup_opened");
 }
 
 function formSubmitHandler(evt) {

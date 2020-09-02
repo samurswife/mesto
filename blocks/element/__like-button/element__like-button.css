@@ -9,3 +9,7 @@
   border: none;
   padding: 0;
 }
+
+.element__like-button:hover {
+  cursor: pointer;
+}
