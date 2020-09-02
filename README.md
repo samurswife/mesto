@@ -6,6 +6,6 @@
 1. Адаптивная верстка (flexbox, grid, относительные величины для установки ширины).
 2. JS (манипуляции с классами элементов, текстовыми узлами).
 
-Ссылка на проект: [https://samurswife.github.io/mesto/](Mesto Russia)
+Ссылка на проект: [Mesto Russia](https://samurswife.github.io/mesto/)
 
 
