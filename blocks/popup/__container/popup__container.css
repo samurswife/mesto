@@ -6,11 +6,25 @@
   flex-direction: column;
   justify-content: center;
   padding: 34px 36px 36px;
+  position: relative;
 }
 
 @media only screen and (max-width: 650px) {
   .popup__container {
     max-width: 90%;
-    margin: 0 15px;
+    margin: 0 40px;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .popup__container {
+    max-width: 90%;
+    margin: 0 40px;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .popup__container {
+    padding: 20px;
   }
 }
