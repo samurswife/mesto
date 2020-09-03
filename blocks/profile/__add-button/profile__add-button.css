@@ -12,6 +12,10 @@
   margin-left: auto;
 }
 
+.profile__add-button:focus {
+  outline: none;
+}
+
 .profile__add-button:hover {
   opacity: 0.6;
   transition: opacity ease 0.5s;
@@ -24,14 +28,9 @@
   }
 }
 
-@media only screen and (max-width: 425px) {
-  .profile__add-button {
-    width: 100%;
-  }
-}
-
 @media only screen and (max-width: 320px) {
   .profile__add-button {
     background-image: url("../../../images/add-button_s.svg");
+    width: 100%;
   }
 }

@@ -4,16 +4,15 @@ let profileName = profile.querySelector(".profile__name");
 let profileAbout = profile.querySelector(".profile__about");
 let popup = document.querySelector(".popup");
 let popupCloseButton = popup.querySelector(".popup__close-button");
-let form = popup.querySelector(".form");
-let formNameInput = form.querySelector("#profile-name");
-let formAboutInput = form.querySelector("#profile-about");
-let formSaveButton = form.querySelector(".form__button");
-
-formNameInput.value = profileName.textContent;
-formAboutInput.value = profileAbout.textContent;
+let form = popup.querySelector(".popup__form");
+let formNameInput = form.querySelector(".popup__form-input_name");
+let formAboutInput = form.querySelector(".popup__form-input_about");
+let formSaveButton = form.querySelector(".popup__form-button");
 
 function showPopup(){
   popup.classList.add("popup_opened");
+  formNameInput.value = profileName.textContent;
+  formAboutInput.value = profileAbout.textContent;
 }
 
 function closePopup(){

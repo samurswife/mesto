@@ -10,6 +10,12 @@
   padding: 0;
 }
 
+.element__like-button:focus {
+  outline: none;
+}
+
 .element__like-button:hover {
+  opacity: 0.6;
+  transition: opacity ease 0.5s;
   cursor: pointer;
 }
