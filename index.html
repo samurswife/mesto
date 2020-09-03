@@ -8,17 +8,6 @@
   </head>
   <body>
     <div class="page">
-      <div class="popup">
-          <div class="popup__container">
-            <button class="popup__close-button"></button>
-            <form class="form">
-              <h3 class="form__title">Редактировать профиль</h3>
-              <input type="text" class="form__input-text" name="name" id="profile-name">
-              <input type="text" class="form__input-text" name="about" id="profile-about">
-              <button type="submit" class="form__button">Сохранить</button>
-            </form>
-        </div>
-      </div>
       <header class="header center">
         <div class="header__logo"></div>
       </header>
@@ -30,11 +19,11 @@
           <div class="profile__info">
             <div class="profile__person">
               <h1 class="profile__name">Жак-Ив Кусто</h1>
-              <button class="profile__edit-button"></button>
+              <button class="profile__edit-button" type="button"></button>
             </div>
             <p class="profile__about">Исследователь океана</p>
           </div>
-          <button class="profile__add-button"></button>
+          <button class="profile__add-button" type="button"></button>
         </section>
 
         <section class="elements center">
@@ -42,42 +31,42 @@
             <img src="./images/karachaevsk.jpg" alt="Карачаевск" class="element__image">
             <div class="element__content">
               <h2 class="element__title">карачаевск</h2>
-              <button class="element__like-button"></button>
+              <button class="element__like-button" type="button"></button>
             </div>
           </div>
           <div class="element">
             <img src="./images/elbrus.png" alt="Эльбрус" class="element__image">
             <div class="element__content">
               <h2 class="element__title">гора эльбрус</h2>
-              <button class="element__like-button"></button>
+              <button class="element__like-button" type="button"></button>
             </div>
           </div>
           <div class="element">
             <img src="./images/dombai.png" alt="Домбай" class="element__image">
             <div class="element__content">
               <h2 class="element__title">домбай</h2>
-              <button class="element__like-button"></button>
+              <button class="element__like-button" type="button"></button>
             </div>
           </div>
           <div class="element">
             <img src="./images/ergaki.jpg" alt="Ергаки" class="element__image">
             <div class="element__content">
               <h2 class="element__title">ергаки</h2>
-              <button class="element__like-button"></button>
+              <button class="element__like-button" type="button"></button>
             </div>
           </div>
           <div class="element">
             <img src="./images/altai.jpg" alt="Алтай" class="element__image">
             <div class="element__content">
               <h2 class="element__title">алтай</h2>
-              <button class="element__like-button"></button>
+              <button class="element__like-button" type="button"></button>
             </div>
           </div>
           <div class="element">
             <img src="./images/karachaevo-cherkessiya.jpg" alt="Карачаево-Черкессия" class="element__image">
             <div class="element__content">
               <h2 class="element__title">карачаево-черкессия</h2>
-              <button class="element__like-button"></button>
+              <button class="element__like-button" type="button"></button>
             </div>
           </div>
         </section>
@@ -86,6 +75,19 @@
       <footer class="footer center">
         <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
       </footer>
+
+      <div class="popup">
+        <div class="popup__container">
+          <button class="popup__close-button" type="button"></button>
+          <form class="popup__form">
+            <h3 class="form__title">Редактировать профиль</h3>
+            <input type="text" class="form__input-text" name="name" id="profile-name">
+            <input type="text" class="form__input-text" name="about" id="profile-about">
+            <button type="submit" class="form__button">Сохранить</button>
+          </form>
+        </div>
+      </div>
+
     </div>
     <script src="./scripts/script.js"></script>
   </body>
