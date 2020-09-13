@@ -1,7 +1,9 @@
 .element__image {
+  margin: 0 0 25px;
   max-width: 282px;
   height: 282px;
   border-radius: 10px 10px 0 0;
-  margin: 0 0 25px;
-  object-fit: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
