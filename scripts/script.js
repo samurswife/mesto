@@ -31,7 +31,7 @@ const initialCards = [
       link: '../images/ergaki.jpg'
   },
   {
-      name: 'карачаево-Черкессия',
+      name: 'Карачаево-Черкессия',
       link: '../images/karachaevo-cherkessiya.jpg'
   },
   {
@@ -40,7 +40,6 @@ const initialCards = [
   }
 ];
 
-//загрузка 6 начальных карточек
 (function () {
   for (let i = 0; i < initialCards.length; i++) {
     let card = cardTemplate.cloneNode(true);
@@ -60,8 +59,8 @@ function closePopup(){
   popup.classList.remove("popup_opened");
 }
 
-function formSubmitHandler(evt) {
-  evt.preventDefault();
+function formSubmitHandler(e) {
+  e.preventDefault();
 
   profileName.textContent = formNameInput.value;
   profileAbout.textContent = formAboutInput.value;
@@ -69,6 +68,20 @@ function formSubmitHandler(evt) {
   closePopup();
 }
 
+function like(e) {
+  e.target.classList.toggle("element-like-button_active");
+}
+
+function deleteCard(e) {
+  e.target.parentNode.remove();
+}
+
 profileEditButton.addEventListener('click', showPopup);
 popupCloseButton.addEventListener('click', closePopup);
 form.addEventListener('submit', formSubmitHandler);
+document.querySelectorAll(".element__like-button").forEach(btn =>{
+  btn.addEventListener('click', like);
+});
+document.querySelectorAll(".element__delete-button").forEach(btn =>{
+  btn.addEventListener('click', deleteCard);
+});
