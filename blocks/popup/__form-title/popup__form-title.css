@@ -5,3 +5,9 @@
   line-height: 1;
   margin: 0 0 50px;
 }
+
+@media only screen and (max-width: 425px) {
+  .popup__form-title {
+    font-size: 18px;
+  }
+}
