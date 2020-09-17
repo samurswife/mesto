@@ -3,14 +3,17 @@ const addPhotoButton = document.querySelector(".profile__add-button");
 const profileName = document.querySelector(".profile__name");
 const profileAbout = document.querySelector(".profile__about");
 
-const popup = document.querySelectorAll(".popup");
+const popups = document.querySelectorAll(".popup");
 const popupEditForm = document.querySelector(".popup_edit-form");
 const popupAddPhotoForm = document.querySelector(".popup_add-form");
-const popupCloseButton = document.querySelectorAll(".popup__close-button");
+const popupPreview = document.querySelector(".popup_preview");
+const popupImage = document.querySelector(".popup__image");
+const popupImageTitle = document.querySelector(".popup__image-title");
+const popupCloseButtons = document.querySelectorAll(".popup__close-button");
 
 const editForm = document.querySelector(".popup__form_edit");
-let formNameInput = document.querySelector(".popup__form-input_name");
-let formAboutInput = document.querySelector(".popup__form-input_about");
+const formNameInput = document.querySelector(".popup__form-input_name");
+const formAboutInput = document.querySelector(".popup__form-input_about");
 const formSaveButton = document.querySelector(".popup__form-button_save");
 
 const addForm = document.querySelector(".popup__form_add");
@@ -22,19 +25,19 @@ const cardsContainer = document.querySelector('.elements');
 const cardTemplate = document.querySelector('#cards').content;
 const initialCards = [
   {
-      name: 'алтай',
+      name: 'Алтай',
       link: '../images/altai.jpg'
   },
   {
-      name: 'домбай',
+      name: 'Домбай',
       link: '../images/dombai.png'
   },
   {
-      name: 'эльбрус',
+      name: 'Эльбрус',
       link: '../images/elbrus.png'
   },
   {
-      name: 'ергаки',
+      name: 'Ергаки',
       link: '../images/ergaki.jpg'
   },
   {
@@ -42,7 +45,7 @@ const initialCards = [
       link: '../images/karachaevo-cherkessiya.jpg'
   },
   {
-      name: 'карачаевск',
+      name: 'Карачаевск',
       link: '../images/karachaevsk.jpg'
   }
 ];
@@ -50,18 +53,19 @@ const initialCards = [
 function renderCards() {
   for (let i = 0; i < initialCards.length; i++) {
     let card = cardTemplate.cloneNode(true);
-    card.querySelector('.element__image').style.backgroundImage = 'url(' + initialCards[i].link + ')';
-    card.querySelector('.element__title').textContent = initialCards[i].name;
+    const cardImage = card.querySelector('.element__image');
+    const cardTitle = card.querySelector('.element__title');
+    const likeButton = card.querySelector(".element__like-button");
+    const deleteButton = card.querySelector(".element__delete-button");
 
-    card.querySelectorAll(".element__like-button").forEach(btn =>{
-      btn.addEventListener('click', like);
-    });
+    cardImage.style.backgroundImage = 'url(' + initialCards[i].link + ')';
+    cardTitle.textContent = initialCards[i].name;
 
-    card.querySelectorAll(".element__delete-button").forEach(btn =>{
-      btn.addEventListener('click', deleteCard);
+    cardImage.addEventListener('click', showPreview);
+    likeButton.addEventListener('click', like);
+    deleteButton.addEventListener('click', deleteCard);
 
     cardsContainer.append(card);
-    });
   }
 };
 
@@ -84,8 +88,19 @@ function showPopupAddPhotoForm(){
   popupAddPhotoForm.classList.add("popup_opened");
 }
 
+function showPreview(e) {
+  const element = e.target.parentNode;
+  const imageTitle = element.querySelector(".element__title").textContent;
+  const bgImageUrl = e.target.getAttribute("style");
+
+  popupImageTitle.textContent = imageTitle;
+  popupImage.setAttribute("src", bgImageUrl.slice((bgImageUrl.indexOf("\"") + 1), -3));
+  popupImage.setAttribute("alt", imageTitle);
+  popupPreview.classList.add("popup_opened");
+}
+
 function closePopup(){
-  popup.forEach(popup => {
+  popups.forEach(popup => {
     popup.classList.remove("popup_opened");
   });
 }
@@ -130,7 +145,7 @@ renderCards();
 
 profileEditButton.addEventListener('click', showPopupEditForm);
 addPhotoButton.addEventListener('click', showPopupAddPhotoForm);
-popupCloseButton.forEach(btn => {
+popupCloseButtons.forEach(btn => {
   btn.addEventListener('click', closePopup);
 });
 editForm.addEventListener('submit', saveButtonHandler);
