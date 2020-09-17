@@ -25,28 +25,28 @@ const cardsContainer = document.querySelector('.elements');
 const cardTemplate = document.querySelector('#cards').content;
 const initialCards = [
   {
-      name: 'Алтай',
-      link: '../images/altai.jpg'
+      name: 'Архыз',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
   },
   {
-      name: 'Домбай',
-      link: '../images/dombai.png'
+      name: 'Челябинская область',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
   },
   {
-      name: 'Эльбрус',
-      link: '../images/elbrus.png'
+      name: 'Иваново',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
   },
   {
-      name: 'Ергаки',
-      link: '../images/ergaki.jpg'
+      name: 'Камчатка',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
   },
   {
-      name: 'Карачаево-Черкессия',
-      link: '../images/karachaevo-cherkessiya.jpg'
+      name: 'Холмогорский район',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
   },
   {
-      name: 'Карачаевск',
-      link: '../images/karachaevsk.jpg'
+      name: 'Байкал',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
 ];
 
