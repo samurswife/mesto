@@ -3,8 +3,6 @@ const addPhotoButton = document.querySelector(".profile__add-button");
 const profileName = document.querySelector(".profile__name");
 const profileAbout = document.querySelector(".profile__about");
 
-const popups = document.querySelectorAll(".popup");
-
 const popupPreview = document.querySelector(".popup_preview");
 const popupImage = document.querySelector(".popup__image");
 const popupImageTitle = document.querySelector(".popup__image-title");
@@ -53,7 +51,7 @@ const initialCards = [
   }
 ];
 
-function addCard(item) {
+function createCard(item) {
   const card = cardTemplate.cloneNode(true);
   const cardImage = card.querySelector('.element__image');
   const cardTitle = card.querySelector('.element__title');
@@ -125,10 +123,7 @@ function addButtonHandler(e) {
     link: link
   }
 
-  const newCard = addCard(card);
-
-  inputPlace.value = "";
-  inputLink.value = "";
+  const newCard = createCard(card);
 
   cardsContainer.prepend(newCard);
 
@@ -136,12 +131,14 @@ function addButtonHandler(e) {
 }
 
 initialCards.forEach(card => {
-  const initCard = addCard(card);
+  const initCard = createCard(card);
   cardsContainer.append(initCard);
 });
 
 profileEditButton.addEventListener("click", openEditForm);
 addPhotoButton.addEventListener("click", function() {
+  inputPlace.value = "";
+  inputLink.value = "";
   openPopup(popupAddPhotoForm);
 }
 );
