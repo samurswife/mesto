@@ -152,4 +152,5 @@ popupCloseButtonPreview.addEventListener("click", function() {
   closePopup(popupPreview);
 });
 editForm.addEventListener("submit", saveButtonHandler);
+
 addForm.addEventListener("submit", addButtonHandler);
