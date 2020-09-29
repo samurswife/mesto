@@ -3,6 +3,8 @@ const addPhotoButton = document.querySelector(".profile__add-button");
 const profileName = document.querySelector(".profile__name");
 const profileAbout = document.querySelector(".profile__about");
 
+const popups = Array.from(document.querySelectorAll(".popup"));
+
 const popupPreview = document.querySelector(".popup_preview");
 const popupImage = document.querySelector(".popup__image");
 const popupImageTitle = document.querySelector(".popup__image-title");
@@ -85,6 +87,12 @@ function closePopup(popup){
     popup.classList.remove("popup_opened");
 }
 
+function closePopupByClickOnOverLay (evt) {
+  if(evt.target === evt.currentTarget) {
+    closePopup(evt.currentTarget);
+  }
+}
+
 function openEditForm(){
   openPopup(popupEditForm);
   formNameInput.value = profileName.textContent;
@@ -135,6 +143,10 @@ initialCards.forEach(card => {
   cardsContainer.append(initCard);
 });
 
+popups.forEach((popup) => {
+  popup.addEventListener("click", closePopupByClickOnOverLay);
+})
+
 profileEditButton.addEventListener("click", openEditForm);
 addPhotoButton.addEventListener("click", function() {
   inputPlace.value = "";
@@ -153,3 +165,5 @@ popupCloseButtonPreview.addEventListener("click", function() {
 });
 editForm.addEventListener("submit", saveButtonHandler);
 addForm.addEventListener("submit", addButtonHandler);
+
+
