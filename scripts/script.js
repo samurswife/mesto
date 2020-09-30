@@ -174,6 +174,7 @@ popups.forEach((popup) => {
 });
 document.addEventListener("keydown", closePopupByEsc);
 editForm.addEventListener("submit", saveButtonHandler);
+
 addForm.addEventListener("submit", addButtonHandler);
 
 
