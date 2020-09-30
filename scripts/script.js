@@ -81,25 +81,29 @@ function deleteCard(e) {
 
 function openPopup(popup){
   popup.classList.add("popup_opened");
+  document.addEventListener('keydown', closePopupByEsc);
 }
 
 function closePopup(popup){
-    popup.classList.remove("popup_opened");
+  popup.classList.remove("popup_opened");
+  document.removeEventListener('keydown', closePopupByEsc);
+}
+
+function closePopupByEsc(evt) {
+  let openedPopup;
+  for (i = 0; i < popups.length; i++) {
+    if (popups[i].classList.contains('popup_opened'))
+    openedPopup = popups[i];
+  }
+
+  if(evt.key === "Escape") {
+    closePopup(openedPopup);
+  }
 }
 
 function closePopupByClickOnOverLay(evt) {
   if(evt.target === evt.currentTarget) {
     closePopup(evt.currentTarget);
-  }
-}
-
-function closePopupByEsc(evt) {
-  if(evt.key === "Escape") {
-    popups.forEach((popup) => {
-      if (popup.classList.contains("popup_opened")) {
-        closePopup(popup);
-      }
-    });
   }
 }
 
@@ -154,25 +158,29 @@ initialCards.forEach(card => {
 });
 
 profileEditButton.addEventListener("click", openEditForm);
+
 addPhotoButton.addEventListener("click", function() {
   inputPlace.value = "";
   inputLink.value = "";
   openPopup(popupAddPhotoForm);
-}
-);
+});
+
 popupCloseButtonEdit.addEventListener("click", function() {
   closePopup(popupEditForm);
 });
+
 popupCloseButtonAdd.addEventListener("click", function() {
   closePopup(popupAddPhotoForm);
 });
+
 popupCloseButtonPreview.addEventListener("click", function() {
   closePopup(popupPreview);
 });
+
 popups.forEach((popup) => {
   popup.addEventListener("click", closePopupByClickOnOverLay);
 });
-document.addEventListener("keydown", closePopupByEsc);
+
 editForm.addEventListener("submit", saveButtonHandler);
 addForm.addEventListener("submit", addButtonHandler);
 
