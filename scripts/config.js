@@ -25,6 +25,14 @@ export const initialCards = [
   }
 ];
 
-export const config = {
+export const cardConfig = {
   cardTemplate: "#cards"
+}
+
+export const formConfig = {
+  inputSelector: ".popup__form-input",
+  submitButtonSelector: ".popup__form-button",
+  inactiveButtonClass: "popup__form-button_disabled",
+  inputErrorClass: "popup__form-input_type_error",
+  errorClass: "popup__form-input-error_active"
 }

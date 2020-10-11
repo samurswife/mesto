@@ -1,5 +1,6 @@
-import {initialCards, config} from './config.js';
+import {initialCards, cardConfig, formConfig} from './config.js';
 import Card from './Card.js';
+import FormValidator from "./FormValidator.js";
 
 const profileEditButton = document.querySelector(".profile__edit-button");
 const addPhotoButton = document.querySelector(".profile__add-button");
@@ -17,7 +18,7 @@ const formNameInput = document.querySelector(".popup__form-input_name");
 const formAboutInput = document.querySelector(".popup__form-input_about");
 const popupCloseButtonEdit = document.querySelector(".popup__close-button_edit");
 
-const popupAddPhotoForm = document.querySelector(".popup_add-form");
+const popupAddCardForm = document.querySelector(".popup_add-form");
 const addForm = document.querySelector(".popup__form_add");
 const inputPlace = document.querySelector(".popup__form-input_place");
 const inputLink = document.querySelector('.popup__form-input_link');
@@ -79,16 +80,15 @@ function addButtonHandler(e) {
     link: link
   }
 
-  const cardElement = new Card(card.name, card.link, config.cardTemplate);
+  const cardElement = new Card(card.name, card.link, cardConfig.cardTemplate);
   const newCard = cardElement.createCard();
   cardsContainer.prepend(newCard);
 
-  closePopup(popupAddPhotoForm);
+  closePopup(popupAddCardForm);
 }
 
-//отрисовка начальных карточек
 initialCards.forEach(card => {
-  const cardElement = new Card(card.name, card.link, config.cardTemplate);
+  const cardElement = new Card(card.name, card.link, cardConfig.cardTemplate);
   const initCard = cardElement.createCard();
   cardsContainer.append(initCard);
 });
@@ -98,7 +98,7 @@ profileEditButton.addEventListener("click", openEditForm);
 addPhotoButton.addEventListener("click", function() {
   inputPlace.value = "";
   inputLink.value = "";
-  openPopup(popupAddPhotoForm);
+  openPopup(popupAddCardForm);
 });
 
 popupCloseButtonEdit.addEventListener("click", function() {
@@ -106,7 +106,7 @@ popupCloseButtonEdit.addEventListener("click", function() {
 });
 
 popupCloseButtonAdd.addEventListener("click", function() {
-  closePopup(popupAddPhotoForm);
+  closePopup(popupAddCardForm);
 });
 
 popupCloseButtonPreview.addEventListener("click", function() {
@@ -120,6 +120,12 @@ popups.forEach((popup) => {
 editForm.addEventListener("submit", saveButtonHandler);
 
 addForm.addEventListener("submit", addButtonHandler);
+
+const formEditProfileValidator = new FormValidator(formConfig, editForm);
+formEditProfileValidator.enableValidation();
+
+const formAddCardValidator = new FormValidator(formConfig, addForm);
+formAddCardValidator.enableValidation();
 
 export {popupPreview, openPopup};
 
