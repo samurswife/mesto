@@ -21,7 +21,8 @@ const popupCloseButtonEdit = document.querySelector(".popup__close-button_edit")
 const popupAddCardForm = document.querySelector(".popup_add-form");
 const addForm = document.querySelector(".popup__form_add");
 const inputPlace = document.querySelector(".popup__form-input_place");
-const inputLink = document.querySelector('.popup__form-input_link');
+const inputLink = document.querySelector(".popup__form-input_link");
+const addCardButton = document.querySelector(".popup__form-button_add");
 const popupCloseButtonAdd = document.querySelector(".popup__close-button_add");
 
 const cardsContainer = document.querySelector('.elements');
@@ -80,7 +81,7 @@ function addButtonHandler(e) {
     link: link
   }
 
-  const cardElement = new Card(card.name, card.link, cardConfig.cardTemplate);
+  const cardElement = new Card(card, cardConfig.cardTemplate);
   const newCard = cardElement.createCard();
   cardsContainer.prepend(newCard);
 
@@ -88,28 +89,28 @@ function addButtonHandler(e) {
 }
 
 initialCards.forEach(card => {
-  const cardElement = new Card(card.name, card.link, cardConfig.cardTemplate);
+  const cardElement = new Card(card, cardConfig.cardTemplate);
   const initCard = cardElement.createCard();
   cardsContainer.append(initCard);
 });
 
 profileEditButton.addEventListener("click", openEditForm);
 
-addPhotoButton.addEventListener("click", function() {
-  inputPlace.value = "";
-  inputLink.value = "";
+addPhotoButton.addEventListener("click", () => {
+  addForm.reset();
+  addCardButton.classList.toggle("popup__form-button_disabled");
   openPopup(popupAddCardForm);
 });
 
-popupCloseButtonEdit.addEventListener("click", function() {
+popupCloseButtonEdit.addEventListener("click", () => {
   closePopup(popupEditForm);
 });
 
-popupCloseButtonAdd.addEventListener("click", function() {
+popupCloseButtonAdd.addEventListener("click", () => {
   closePopup(popupAddCardForm);
 });
 
-popupCloseButtonPreview.addEventListener("click", function() {
+popupCloseButtonPreview.addEventListener("click", () => {
   closePopup(popupPreview);
 });
 

@@ -1,9 +1,9 @@
-import {openPopup, popupPreview} from "./index.js";
+import {openPopup, popupPreview} from "./utils.js";
 
 class Card {
-  constructor(name, link, templateSelector){
-    this._name = name;
-    this._link = link;
+  constructor(card, templateSelector){
+    this._name = card.name;
+    this._link = card.link;
     this._templateSelector = templateSelector;
   }
 
@@ -14,9 +14,12 @@ class Card {
   createCard() {
     this._card = this._getTemplate();
 
-    this._card.querySelector('.element__title').textContent = this._name;
-    this._card.querySelector('.element__image').style.backgroundImage = 'url(' + this._link + ')';
-    this._card.querySelector('.element__image').setAttribute("alt", this._name);
+    const cardImage = this._card.querySelector('.element__image');
+    const cardTitle = this._card.querySelector('.element__title');
+
+    cardTitle.textContent = this._name;
+    cardImage.style.backgroundImage = `url(${this._link})`;
+    cardImage.setAttribute("alt", this._name);
 
     this._setEventListeners();
 
@@ -42,17 +45,19 @@ class Card {
   }
 
   _deleteCard(e) {
-    e.target.closest(".element").remove();
+    this._card.remove();
+    this._card = null;
   }
 
   _showPreview(e) {
-    const element = e.target.closest(".element");
-    const imageTitle = element.querySelector(".element__title").textContent;
+    const imageTitle = this._card.querySelector(".element__title").textContent;
     const bgImageUrl = e.target.style.backgroundImage;
+    const popupImage = document.querySelector(".popup__image");
+    const popupImageTitle = document.querySelector(".popup__image-title");
 
-    document.querySelector(".popup__image-title").textContent = imageTitle;
-    document.querySelector(".popup__image").setAttribute("src", bgImageUrl.slice((bgImageUrl.indexOf("\"") + 1), -2));
-    document.querySelector(".popup__image").setAttribute("alt", imageTitle);
+    popupImageTitle.textContent = imageTitle;
+    popupImage.setAttribute("src", bgImageUrl.slice((bgImageUrl.indexOf("\"") + 1), -2));
+    popupImage.setAttribute("alt", imageTitle);
 
     openPopup(popupPreview);
   }
