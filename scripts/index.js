@@ -98,7 +98,7 @@ profileEditButton.addEventListener("click", openEditForm);
 
 addPhotoButton.addEventListener("click", () => {
   addForm.reset();
-  addCardButton.classList.toggle("popup__form-button_disabled");
+  addCardButton.classList.add("popup__form-button_disabled");
   openPopup(popupAddCardForm);
 });
 
