@@ -1,6 +1,7 @@
-import {initialCards, cardConfig, formConfig} from './config.js';
-import Card from './Card.js';
-import FormValidator from "./FormValidator.js";
+import {initialCards, cardConfig, formConfig} from "../utils/constants.js";
+import Section from "../components/Section.js";
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
 
 const profileEditButton = document.querySelector(".profile__edit-button");
 const addPhotoButton = document.querySelector(".profile__add-button");

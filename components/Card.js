@@ -1,6 +1,6 @@
-import {openPopup, popupPreview} from "./utils.js";
+import {openPopup, popupPreview} from "../utils/utils.js";
 
-class Card {
+export default class Card {
   constructor(card, templateSelector){
     this._name = card.name;
     this._link = card.link;
@@ -62,5 +62,3 @@ class Card {
     openPopup(popupPreview);
   }
 }
-
-export default Card;
