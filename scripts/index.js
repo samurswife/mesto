@@ -1,5 +1,6 @@
-import {initialCards, cardConfig, formConfig} from './config.js';
-import Card from './Card.js';
+import {initialCards, cardConfig, formConfig} from "./config.js";
+import Section from "./Section.js";
+import Card from "./Card.js";
 import FormValidator from "./FormValidator.js";
 
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -81,6 +82,17 @@ function addButtonHandler(e) {
     link: link
   }
 
+  // const newCard = new Section({
+  //   data: card,
+  //   renderer: (item) => {
+  //     const cardElement = new Card(item, cardConfig.cardTemplate);
+  //     const addedCard = cardElement.createCard();
+  //     cardsContainer.addItem(addedCard);
+  //   }
+  // }, cardsContainer);
+
+  // newCard.renderItems();
+
   const cardElement = new Card(card, cardConfig.cardTemplate);
   const newCard = cardElement.createCard();
   cardsContainer.prepend(newCard);
@@ -88,11 +100,16 @@ function addButtonHandler(e) {
   closePopup(popupAddCardForm);
 }
 
-initialCards.forEach(card => {
-  const cardElement = new Card(card, cardConfig.cardTemplate);
-  const initCard = cardElement.createCard();
-  cardsContainer.append(initCard);
-});
+const startCards = new Section({
+  data: initialCards,
+  renderer: (item) => {
+    const cardElement = new Card(item, cardConfig.cardTemplate);
+    const initCard = cardElement.createCard();
+    startCards.addItem(initCard);
+  }
+}, cardsContainer);
+
+startCards.renderItems();
 
 profileEditButton.addEventListener("click", openEditForm);
 
