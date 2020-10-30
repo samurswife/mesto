@@ -31,7 +31,9 @@ previewPopup.setEventListeners();
 const popupUserInfoForm = new PopupWithForm({
   popupSelector: popupSelectors.popupUserInfoFormSelector,
   handleFormSubmit: () => {
-    userProfile.setUserInfo();
+    const nameValue = inputSelectors.formNameInput.value;
+    const infoValue = inputSelectors.formAboutInput.value;
+    userProfile.setUserInfo(nameValue, infoValue);
     popupUserInfoForm.close();
   }
 });
@@ -77,8 +79,9 @@ buttonSelectors.addPhotoButton.addEventListener("click", () => {
 
 //Кнопка редактирования профиля
 buttonSelectors.profileEditButton.addEventListener("click", () => {
-  inputSelectors.formNameInput.value = userProfile.getUserInfo().name;
-  inputSelectors.formAboutInput.value = userProfile.getUserInfo().about;
+  const userObj = userProfile.getUserInfo();
+  inputSelectors.formNameInput.value = userObj.name;
+  inputSelectors.formAboutInput.value = userObj.info;
   popupUserInfoForm.open();
 });
 
