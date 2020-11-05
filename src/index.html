@@ -70,6 +70,16 @@
         </div>
       </div>
 
+      <div class="popup popup_confirm">
+        <div class="popup__container">
+          <button class="popup__close-button popup__close-button_confirm" type="button"></button>
+          <form class="popup__form popup__form_confirm" method="POST" name="confirm-form">
+            <h3 class="popup__form-title popup__form-title_confirm">Вы уверены?</h3>
+            <button type="submit" class="popup__form-button popup__form-button_confirm">Да</button>
+          </form>
+        </div>
+      </div>
+
       <template id="cards">
         <div class="element">
           <button class="element__delete-button" type="button"></button>
@@ -80,7 +90,6 @@
               <button class="element__like-button" type="button"></button>
               <p class="element__like-counter">0</p>
             </div>
-
           </div>
         </div>
       </template>
