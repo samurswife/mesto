@@ -40,10 +40,22 @@
           <form class="popup__form popup__form_edit" method="POST" name="edit-profile">
             <h3 class="popup__form-title">Редактировать профиль</h3>
             <input type="text" id="name-input" class="popup__form-input popup__form-input_name" name="user" minlength="2" maxlength="40" required>
-            <span id="name-input-error" class="popup__form-input-error">Вы пропустили это поле</span>
+            <span id="name-input-error" class="popup__form-input-error"></span>
             <input type="text" id="about-input" class="popup__form-input popup__form-input_about" name="about" minlength="2" maxlength="200" required>
-            <span id="about-input-error" class="popup__form-input-error">Вы пропустили это поле</span>
+            <span id="about-input-error" class="popup__form-input-error"></span>
             <button type="submit" class="popup__form-button popup__form-button_save">Сохранить</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="popup popup_edit-avatar-form">
+        <div class="popup__container">
+          <button class="popup__close-button popup__close-button_edit-avatar" type="button"></button>
+          <form class="popup__form popup__form_edit-avatar" method="POST" name="edit-avatar">
+            <h3 class="popup__form-title">Обновить аватар</h3>
+            <input type="url" id="avatar-input" class="popup__form-input popup__form-input_avatar" name="avatar" placeholder="Ссылка на картинку" required>
+            <span id="avatar-input-error" class="popup__form-input-error"></span>
+            <button type="submit" class="popup__form-button popup__form-button_save-avatar">Сохранить</button>
           </form>
         </div>
       </div>

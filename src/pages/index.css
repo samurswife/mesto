@@ -42,6 +42,7 @@
 @import url("../blocks/popup/popup.css");
 @import url("../blocks/popup/_opened/popup_opened.css");
 @import url("../blocks/popup/_edit-form/popup_edit-form.css");
+@import url("../blocks/popup/_edit-avatar-form/popup_edit-avatar-form.css");
 @import url("../blocks/popup/_add-form/popup_add-form.css");
 @import url("../blocks/popup/_preview/popup_preview.css");
 @import url("../blocks/popup/_confirm/popup_confirm.css");
@@ -49,6 +50,7 @@
 @import url("../blocks/popup/__container/popup__container.css");
 @import url("../blocks/popup/__form/popup__form.css");
 @import url("../blocks/popup/__form/_edit/popup__form_edit.css");
+@import url("../blocks/popup/__form/_edit-avatar/popup__form_edit-avatar.css");
 @import url("../blocks/popup/__form/_add/popup__form_add.css");
 @import url("../blocks/popup/__form/_confirm/popup__form_confirm.css");
 @import url("../blocks/popup/__form-title/popup__form-title.css");
@@ -58,11 +60,13 @@
 @import url("../blocks/popup/__form-input/_about/popup__form-input_about.css");
 @import url("../blocks/popup/__form-input/_place/popup__form-input_place.css");
 @import url("../blocks/popup/__form-input/_link/popup__form-input_link.css");
+@import url("../blocks/popup/__form-input/_avatar/popup__form-input_avatar.css");
 @import url("../blocks/popup/__form-input/_type/popup__form-input_type_error.css");
 @import url("../blocks/popup/__form-input-error/popup__form-input-error.css");
 @import url("../blocks/popup/__form-input-error/_active/popup__form-input-error_active.css");
 @import url("../blocks/popup/__form-button/popup__form-button.css");
 @import url("../blocks/popup/__form-button/_save/popup__form-button_save.css");
+@import url("../blocks/popup/__form-button/_save-avatar/popup__form-button_save-avatar.css");
 @import url("../blocks/popup/__form-button/_add/popup__form-button_add.css");
 @import url("../blocks/popup/__form-button/_confirm/popup__form-button_confirm.css");
 @import url("../blocks/popup/__form-button/_disabled/popup__form-button_disabled.css");
