@@ -45,15 +45,6 @@ previewPopup.setEventListeners();
 
 //Попап для добавления информации о пользователе
 
-// const popupUserInfoForm = new PopupWithForm({
-//   popupSelector: popupSelectors.popupUserInfoFormSelector,
-//   handleFormSubmit: () => {
-//     const nameValue = inputSelectors.formNameInput.value;
-//     const infoValue = inputSelectors.formAboutInput.value;
-//     userProfile.setUserInfo(nameValue, infoValue);
-//     popupUserInfoForm.close();
-//   }
-// });
 const popupUserInfoForm = new PopupWithForm({
   popupSelector: popupSelectors.popupUserInfoFormSelector,
   handleFormSubmit: () => {
@@ -70,6 +61,19 @@ const popupUserInfoForm = new PopupWithForm({
   }
 });
 popupUserInfoForm.setEventListeners();
+
+//Попап для загрузки аватара пользователя
+const popupUserAvatarForm = new PopupWithForm({
+  popupSelector: popupSelectors.popupUserAvatarFormSelector,
+  handleFormSubmit: () => {
+    const avatarLink = inputSelectors.formAvatarInput.value;
+    api.updateUserAvatar(avatarLink).then(data => {
+      document.querySelector(profileElementsSelectors.profileAvatar).style.backgroundImage = `url("${data.avatar}")`;
+    });
+    popupUserAvatarForm.close();
+  }
+});
+popupUserAvatarForm.setEventListeners();
 
 //Попап для добавления карточки
 const popupAddCardForm = new PopupWithForm({
@@ -116,11 +120,22 @@ buttonSelectors.profileEditButton.addEventListener("click", () => {
   popupUserInfoForm.open();
 });
 
+//Кнопка редактирования аватара
+buttonSelectors.editAvatarButton.addEventListener("click", () => {
+  buttonSelectors.addAvatarButton.classList.add(formConfig.inactiveButtonClass);
+  popupUserAvatarForm.open();
+  }
+);
+
 //***Валидация форм***//
 
 //Валидация формы редактирования профиля
 const formEditProfileValidator = new FormValidator(formConfig, formSelectors.editForm);
 formEditProfileValidator.enableValidation();
+
+//Валидация формы замены аватара
+const formEditAvatarValidator = new FormValidator(formConfig, formSelectors.avatarForm);
+formEditAvatarValidator.enableValidation();
 
 //Валидация формы добавления карточки
 const formAddCardValidator = new FormValidator(formConfig, formSelectors.addForm);
