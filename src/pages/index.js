@@ -100,8 +100,15 @@ popupUserAvatarForm.setEventListeners();
 const popupAddCardForm = new PopupWithForm({
   popupSelector: popupSelectors.popupAddCardFormSelector,
   handleFormSubmit: (formData) => {
-    renderCard(formData);
-    popupAddCardForm.close();
+    renderLoading(true, buttonSelectors.addCardButton, "Создать");
+    api.uploadNewCard(formData)
+    .then((data) => renderCard(data))
+    .then(() => {
+      renderLoading(false, buttonSelectors.addCardButton, "Создать");
+    })
+    .finally(() => {
+      popupAddCardForm.close();
+    });
   }
 });
 popupAddCardForm.setEventListeners();

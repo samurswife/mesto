@@ -23,6 +23,25 @@ export default class Api {
     })
   }
 
+  loadInitialCards(){
+    return fetch(`${this._url}/cards`, {
+      method: "GET",
+      headers: this._headers
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    })
+    .then(data => {
+      return data;
+    })
+    .catch(err => {
+      alert(err);
+    })
+  }
+
   updateUserInfo(user){
     return fetch(`${this._url}/users/me`, {
       method: "PATCH",
@@ -68,10 +87,14 @@ export default class Api {
     });
   }
 
-  loadInitialCards(){
+  uploadNewCard(card){
     return fetch(`${this._url}/cards`, {
-      method: "GET",
-      headers: this._headers
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify({
+        name: card.name,
+        link: card.link
+      })
     })
     .then(res => {
       if (res.ok) {
@@ -84,6 +107,6 @@ export default class Api {
     })
     .catch(err => {
       alert(err);
-    })
+    });
   }
 }
