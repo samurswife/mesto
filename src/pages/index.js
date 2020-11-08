@@ -26,6 +26,15 @@ const api = new Api({
   }
 });
 
+//Подсказка, что данные загружаются на сервер
+const renderLoading = (isLoading, button, initButtonText) => {
+  if(isLoading){
+    button.textContent = "Сохранение...";
+  } else {
+    button.textContent = `${initButtonText}`;
+  }
+}
+
 //***Создание профиля пользователя ***//
 
 const userProfile = new UserInfo(profileElementsSelectors.profileName, profileElementsSelectors.profileAbout);
@@ -44,10 +53,10 @@ const previewPopup = new PopupWithImage(popupSelectors.popupPreviewSelector);
 previewPopup.setEventListeners();
 
 //Попап для добавления информации о пользователе
-
 const popupUserInfoForm = new PopupWithForm({
   popupSelector: popupSelectors.popupUserInfoFormSelector,
   handleFormSubmit: () => {
+    renderLoading(true, buttonSelectors.submitProfileButton, "Сохранить");
     const userInfo = {
       name: inputSelectors.formNameInput.value,
       about: inputSelectors.formAboutInput.value
@@ -56,8 +65,13 @@ const popupUserInfoForm = new PopupWithForm({
       document.querySelector(profileElementsSelectors.profileName).textContent = data.name;
       document.querySelector(profileElementsSelectors.profileAbout).textContent = data.about;
     }
-    );
-    popupUserInfoForm.close();
+    )
+    .then(() => {
+      renderLoading(false, buttonSelectors.submitProfileButton, "Сохранить");
+    })
+    .finally(() => {
+      popupUserInfoForm.close();
+    });
   }
 });
 popupUserInfoForm.setEventListeners();
@@ -66,11 +80,18 @@ popupUserInfoForm.setEventListeners();
 const popupUserAvatarForm = new PopupWithForm({
   popupSelector: popupSelectors.popupUserAvatarFormSelector,
   handleFormSubmit: () => {
+    renderLoading(true, buttonSelectors.addAvatarButton, "Сохранить");
     const avatarLink = inputSelectors.formAvatarInput.value;
     api.updateUserAvatar(avatarLink).then(data => {
       document.querySelector(profileElementsSelectors.profileAvatar).style.backgroundImage = `url("${data.avatar}")`;
+    })
+    .then(() => {
+      renderLoading(false, buttonSelectors.addAvatarButton, "Сохранить");
+    })
+    .finally(() => {
+      popupUserAvatarForm.close();
     });
-    popupUserAvatarForm.close();
+
   }
 });
 popupUserAvatarForm.setEventListeners();

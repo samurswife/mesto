@@ -9,6 +9,7 @@ export const buttonSelectors = {
   profileEditButton: document.querySelector(".profile__edit-button"),
   editAvatarButton: document.querySelector(".profile__avatar-button"),
   addPhotoButton: document.querySelector(".profile__add-button"),
+  submitProfileButton: document.querySelector(".popup__form-button_save"),
   addAvatarButton: document.querySelector(".popup__form-button_save-avatar"),
   addCardButton: document.querySelector(".popup__form-button_add")
 };
