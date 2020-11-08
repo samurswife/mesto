@@ -23,6 +23,29 @@ export default class Api {
     })
   }
 
+  updateUserInfo(user){
+    return fetch(`${this._url}/users/me`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        name: user.name,
+        about: user.about
+      })
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    })
+    .then(data => {
+      return data;
+    })
+    .catch(err => {
+      alert(err);
+    });
+  }
+
   loadInitialCards(){
     return fetch(`${this._url}/cards`, {
       method: "GET",

@@ -31,12 +31,11 @@ const api = new Api({
 const userProfile = new UserInfo(profileElementsSelectors.profileName, profileElementsSelectors.profileAbout);
 
 //Загрузка данных пользователя на страницу с сервера
-const userInfo = api.loadUserInfo()
-.then(data => {
+api.loadUserInfo().then(data => {
   document.querySelector(profileElementsSelectors.profileName).textContent = data.name;
   document.querySelector(profileElementsSelectors.profileAbout).textContent = data.about;
   document.querySelector(profileElementsSelectors.profileAvatar).style.backgroundImage = `url("${data.avatar}")`;
-})
+});
 
 //***Создание попапов ***//
 
@@ -46,12 +45,27 @@ previewPopup.setEventListeners();
 
 //Попап для добавления информации о пользователе
 
+// const popupUserInfoForm = new PopupWithForm({
+//   popupSelector: popupSelectors.popupUserInfoFormSelector,
+//   handleFormSubmit: () => {
+//     const nameValue = inputSelectors.formNameInput.value;
+//     const infoValue = inputSelectors.formAboutInput.value;
+//     userProfile.setUserInfo(nameValue, infoValue);
+//     popupUserInfoForm.close();
+//   }
+// });
 const popupUserInfoForm = new PopupWithForm({
   popupSelector: popupSelectors.popupUserInfoFormSelector,
   handleFormSubmit: () => {
-    const nameValue = inputSelectors.formNameInput.value;
-    const infoValue = inputSelectors.formAboutInput.value;
-    userProfile.setUserInfo(nameValue, infoValue);
+    const userInfo = {
+      name: inputSelectors.formNameInput.value,
+      about: inputSelectors.formAboutInput.value
+    }
+    api.updateUserInfo(userInfo).then(data => {
+      document.querySelector(profileElementsSelectors.profileName).textContent = data.name;
+      document.querySelector(profileElementsSelectors.profileAbout).textContent = data.about;
+    }
+    );
     popupUserInfoForm.close();
   }
 });
