@@ -1,6 +1,5 @@
 import "./index.css";
 import {
-  initialCards,
   popupSelectors,
   buttonSelectors,
   formSelectors,
@@ -9,6 +8,7 @@ import {
   cardsContainer,
   cardConfig,
   formConfig } from "../utils/constants.js";
+import Api from "../components/Api.js";
 import Section from "../components/Section.js";
 import Card from "../components/Card.js";
 import PopupWithImage from "../components/PopupWithImage.js";
@@ -16,9 +16,27 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js"
 import FormValidator from "../components/FormValidator.js";
 
+//***Создание класса Api***/
+
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-17',
+  headers: {
+    authorization: '0a6bff0b-1736-41fa-9351-11fa93721afd',
+    'Content-Type': 'application/json'
+  }
+});
+
 //***Создание профиля пользователя ***//
 
 const userProfile = new UserInfo(profileElementsSelectors.profileName, profileElementsSelectors.profileAbout);
+
+//Загрузка данных пользователя на страницу с сервера
+const userInfo = api.loadUserInfo()
+.then(data => {
+  document.querySelector(profileElementsSelectors.profileName).textContent = data.name;
+  document.querySelector(profileElementsSelectors.profileAbout).textContent = data.about;
+  document.querySelector(profileElementsSelectors.profileAvatar).style.backgroundImage = `url("${data.avatar}")`;
+})
 
 //***Создание попапов ***//
 
@@ -62,11 +80,10 @@ const renderCard = (card) => {
 
 //Отрисовка начальных карточек
 const cardsSection = new Section({
-  data: initialCards,
   renderer: renderCard
 }, cardsContainer);
 
-cardsSection.renderItems();
+api.loadInitialCards().then(res => cardsSection.renderItems(res));
 
 //***Слушатели событий ***//
 
