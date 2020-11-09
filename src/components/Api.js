@@ -19,7 +19,7 @@ export default class Api {
       return data;
     })
     .catch(err => {
-      alert(err);
+      console.log(err);
     })
   }
 
@@ -38,7 +38,7 @@ export default class Api {
       return data;
     })
     .catch(err => {
-      alert(err);
+      console.log(err);
     })
   }
 
@@ -61,7 +61,7 @@ export default class Api {
       return data;
     })
     .catch(err => {
-      alert(err);
+      console.log(err);
     });
   }
 
@@ -70,7 +70,7 @@ export default class Api {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        avatar: link
+        avatar: link.avatar
       })
     })
     .then(res => {
@@ -79,11 +79,11 @@ export default class Api {
       }
       return Promise.reject(`Ошибка: ${res.status}`);
     })
-    .then(data => {
-      return data;
-    })
+    // .then(data => {
+    //   return data;
+    // })
     .catch(err => {
-      alert(err);
+      console.log(err);
     });
   }
 
@@ -106,7 +106,9 @@ export default class Api {
       return data;
     })
     .catch(err => {
-      alert(err);
+      console.log(err);
     });
   }
+
+
 }

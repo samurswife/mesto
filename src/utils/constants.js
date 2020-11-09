@@ -2,7 +2,8 @@ export const popupSelectors = {
   popupPreviewSelector: ".popup_preview",
   popupUserInfoFormSelector: ".popup_edit-form",
   popupUserAvatarFormSelector: ".popup_edit-avatar-form",
-  popupAddCardFormSelector: ".popup_add-form"
+  popupAddCardFormSelector: ".popup_add-form",
+  popupConfirmSelector: ".popup_confirm"
 };
 
 export const buttonSelectors = {

@@ -13,6 +13,7 @@ import Section from "../components/Section.js";
 import Card from "../components/Card.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithConfirm from "../components/PopupWithConfirm.js";
 import UserInfo from "../components/UserInfo.js"
 import FormValidator from "../components/FormValidator.js";
 
@@ -55,17 +56,12 @@ previewPopup.setEventListeners();
 //Попап для добавления информации о пользователе
 const popupUserInfoForm = new PopupWithForm({
   popupSelector: popupSelectors.popupUserInfoFormSelector,
-  handleFormSubmit: () => {
+  handleFormSubmit: (formData) => {
     renderLoading(true, buttonSelectors.submitProfileButton, "Сохранить");
-    const userInfo = {
-      name: inputSelectors.formNameInput.value,
-      about: inputSelectors.formAboutInput.value
-    }
-    api.updateUserInfo(userInfo).then(data => {
+    api.updateUserInfo(formData).then(data => {
       document.querySelector(profileElementsSelectors.profileName).textContent = data.name;
       document.querySelector(profileElementsSelectors.profileAbout).textContent = data.about;
-    }
-    )
+    })
     .then(() => {
       renderLoading(false, buttonSelectors.submitProfileButton, "Сохранить");
     })
@@ -79,10 +75,9 @@ popupUserInfoForm.setEventListeners();
 //Попап для загрузки аватара пользователя
 const popupUserAvatarForm = new PopupWithForm({
   popupSelector: popupSelectors.popupUserAvatarFormSelector,
-  handleFormSubmit: () => {
+  handleFormSubmit: (formData) => {
     renderLoading(true, buttonSelectors.addAvatarButton, "Сохранить");
-    const avatarLink = inputSelectors.formAvatarInput.value;
-    api.updateUserAvatar(avatarLink).then(data => {
+    api.updateUserAvatar(formData).then(data => {
       document.querySelector(profileElementsSelectors.profileAvatar).style.backgroundImage = `url("${data.avatar}")`;
     })
     .then(() => {
@@ -91,7 +86,6 @@ const popupUserAvatarForm = new PopupWithForm({
     .finally(() => {
       popupUserAvatarForm.close();
     });
-
   }
 });
 popupUserAvatarForm.setEventListeners();
@@ -102,7 +96,7 @@ const popupAddCardForm = new PopupWithForm({
   handleFormSubmit: (formData) => {
     renderLoading(true, buttonSelectors.addCardButton, "Создать");
     api.uploadNewCard(formData)
-    .then((data) => renderCard(data))
+    .then((card) => renderCard(card))
     .then(() => {
       renderLoading(false, buttonSelectors.addCardButton, "Создать");
     })
@@ -113,12 +107,29 @@ const popupAddCardForm = new PopupWithForm({
 });
 popupAddCardForm.setEventListeners();
 
+//Попап для удаления карточки
+const popupConfirmDeletion = new PopupWithConfirm({
+  popupSelector: popupSelectors.popupConfirmSelector,
+  handleFormSubmit: () => {
+    console.log("Hi");
+    popupConfirmDeletion.close();
+  }
+});
+popupConfirmDeletion.setEventListeners();
+
 //***Работа с карточками***//
 
 //Создание карточки
 const renderCard = (card) => {
-  const cardElement = new Card(card, cardConfig.cardTemplate, () => {
-    previewPopup.open(card);
+  const cardElement = new Card({
+    card: card,
+    templateSelector: cardConfig.cardTemplate,
+    handleCardClick: () => {
+      previewPopup.open(card);
+    },
+    handleDeleteIconClick: () => {
+      popupConfirmDeletion.open();
+    }
   });
   const newCard = cardElement.createCard();
   cardsSection.addItem(newCard);
