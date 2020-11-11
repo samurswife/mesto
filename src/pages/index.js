@@ -28,9 +28,9 @@ const api = new Api({
 });
 
 //Подсказка, что данные загружаются на сервер
-const renderLoading = (isLoading, button, initButtonText) => {
+const renderLoading = (isLoading, button, initButtonText, loadingButtonText) => {
   if(isLoading){
-    button.textContent = "Сохранение...";
+    button.textContent = `${loadingButtonText}`;
   } else {
     button.textContent = `${initButtonText}`;
   }
@@ -57,13 +57,13 @@ previewPopup.setEventListeners();
 const popupUserInfoForm = new PopupWithForm({
   popupSelector: popupSelectors.popupUserInfoFormSelector,
   handleFormSubmit: (formData) => {
-    renderLoading(true, buttonSelectors.submitProfileButton, "Сохранить");
+    renderLoading(true, buttonSelectors.submitProfileButton, "Сохранить", "Сохранение...");
     api.updateUserInfo(formData).then(data => {
       document.querySelector(profileElementsSelectors.profileName).textContent = data.name;
       document.querySelector(profileElementsSelectors.profileAbout).textContent = data.about;
     })
     .then(() => {
-      renderLoading(false, buttonSelectors.submitProfileButton, "Сохранить");
+      renderLoading(false, buttonSelectors.submitProfileButton, "Сохранить", "Сохранение...");
     })
     .finally(() => {
       popupUserInfoForm.close();
@@ -94,11 +94,11 @@ popupUserAvatarForm.setEventListeners();
 const popupAddCardForm = new PopupWithForm({
   popupSelector: popupSelectors.popupAddCardFormSelector,
   handleFormSubmit: (formData) => {
-    renderLoading(true, buttonSelectors.addCardButton, "Создать");
+    renderLoading(true, buttonSelectors.addCardButton, "Создать", "Сохранение...");
     api.uploadNewCard(formData)
     .then((card) => renderCard(card))
     .then(() => {
-      renderLoading(false, buttonSelectors.addCardButton, "Создать");
+      renderLoading(false, buttonSelectors.addCardButton, "Создать", "Сохранение...");
     })
     .finally(() => {
       popupAddCardForm.close();
@@ -107,13 +107,10 @@ const popupAddCardForm = new PopupWithForm({
 });
 popupAddCardForm.setEventListeners();
 
-//Попап для удаления карточки
+//Попап для подтверждения удаления карточки
 const popupConfirmDeletion = new PopupWithConfirm({
   popupSelector: popupSelectors.popupConfirmSelector,
-  handleFormSubmit: () => {
-    console.log("Hi");
-    popupConfirmDeletion.close();
-  }
+  handleFormSubmit: ""
 });
 popupConfirmDeletion.setEventListeners();
 
@@ -127,11 +124,30 @@ const renderCard = (card) => {
     handleCardClick: () => {
       previewPopup.open(card);
     },
-    handleDeleteIconClick: () => {
+    handleDeleteIconClick: (card) => {
+      const newHandleFormSubmit = () => {
+        renderLoading(true, buttonSelectors.confirmButton, "Да", "Удаление...");
+        api.deleteCard(card)
+        .then(() => renderLoading(false, buttonSelectors.confirmButton, "Да", "Удаление"))
+        .then(() => cardElement.deleteCard())
+        .finally(() => {
+          popupConfirmDeletion.close();
+        });
+      }
+      popupConfirmDeletion.setHandleFormSubmit(newHandleFormSubmit);
       popupConfirmDeletion.open();
+    },
+    handleLikeClick: (card) => {
+      console.log(card._likes.length);
     }
   });
+
   const newCard = cardElement.createCard();
+  api.loadUserInfo().then(data => {
+    if(data._id !== card.owner._id) {
+      newCard.querySelector(".element__delete-button").classList.add("element__delete-button_hidden");
+    }
+  });
   cardsSection.addItem(newCard);
 }
 

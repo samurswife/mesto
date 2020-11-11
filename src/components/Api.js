@@ -110,5 +110,22 @@ export default class Api {
     });
   }
 
-
+  deleteCard(card){
+    return fetch(`${this._url}/cards/${card._id}`, {
+      method: "DELETE",
+      headers: this._headers,
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    })
+    .then(data => {
+      return data;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }
 }
