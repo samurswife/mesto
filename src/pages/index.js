@@ -162,8 +162,8 @@ const renderCard = (card) => {
               }
             }) //card._likes.forEach()
           }) //api.loadUserInfo()
-        }
-      },
+        } //else
+      }, //handleLikeClick
   });
 
   const newCard = cardElement.createCard();
