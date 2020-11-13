@@ -57,13 +57,13 @@ previewPopup.setEventListeners();
 const popupUserInfoForm = new PopupWithForm({
   popupSelector: popupSelectors.popupUserInfoFormSelector,
   handleFormSubmit: (formData) => {
-    renderLoading(true, buttonSelectors.submitProfileButton, "Сохранить", "Сохранение...");
+    renderLoading(true, buttonSelectors.submitProfileButton, "Сохранить", "Загрузка...");
     api.updateUserInfo(formData).then(data => {
       document.querySelector(profileElementsSelectors.profileName).textContent = data.name;
       document.querySelector(profileElementsSelectors.profileAbout).textContent = data.about;
     })
     .then(() => {
-      renderLoading(false, buttonSelectors.submitProfileButton, "Сохранить", "Сохранение...");
+      renderLoading(false, buttonSelectors.submitProfileButton, "Сохранить", "Загрузка...");
     })
     .finally(() => {
       popupUserInfoForm.close();
@@ -76,12 +76,12 @@ popupUserInfoForm.setEventListeners();
 const popupUserAvatarForm = new PopupWithForm({
   popupSelector: popupSelectors.popupUserAvatarFormSelector,
   handleFormSubmit: (formData) => {
-    renderLoading(true, buttonSelectors.addAvatarButton, "Сохранить");
+    renderLoading(true, buttonSelectors.addAvatarButton, "Сохранить", "Загрузка...");
     api.updateUserAvatar(formData).then(data => {
       document.querySelector(profileElementsSelectors.profileAvatar).style.backgroundImage = `url("${data.avatar}")`;
     })
     .then(() => {
-      renderLoading(false, buttonSelectors.addAvatarButton, "Сохранить");
+      renderLoading(false, buttonSelectors.addAvatarButton, "Сохранить", "Загрузка...");
     })
     .finally(() => {
       popupUserAvatarForm.close();
@@ -129,7 +129,7 @@ const renderCard = (card) => {
         renderLoading(true, buttonSelectors.confirmButton, "Да", "Удаление...");
         api.deleteCard(card)
         .then(() => renderLoading(false, buttonSelectors.confirmButton, "Да", "Удаление"))
-        .then(() => cardElement.deleteCard())
+        .then(() => cardElement.removeCard())
         .finally(() => {
           popupConfirmDeletion.close();
         });
@@ -137,16 +137,46 @@ const renderCard = (card) => {
       popupConfirmDeletion.setHandleFormSubmit(newHandleFormSubmit);
       popupConfirmDeletion.open();
     },
-    handleLikeClick: (card) => {
-      console.log(card._likes.length);
-    }
+    handleLikeClick: (e, card) => {
+      if(card._likes.length === 0){
+        api.likeCard(card)
+          .then(data => {
+            card._likes = data.likes;
+            cardElement.increaseLikes(e, data.likes.length);
+          });
+        } else {
+          api.loadUserInfo(). then(data => {
+            card._likes.some(user => {
+              if(user._id === data._id) {
+                api.dislikeCard(card)
+                .then(data => {
+                  card._likes = data.likes;
+                  cardElement.decreaseLikes(e, data.likes.length);
+                }); //api.dislikeCard()
+              } else {
+                api.likeCard(card)
+                .then(data => {
+                  card._likes = data.likes;
+                  cardElement.increaseLikes(e, data.likes.length);
+                }); //api.likeCard()
+              }
+            }) //card._likes.forEach()
+          }) //api.loadUserInfo()
+        }
+      },
   });
 
   const newCard = cardElement.createCard();
+
   api.loadUserInfo().then(data => {
     if(data._id !== card.owner._id) {
       newCard.querySelector(".element__delete-button").classList.add("element__delete-button_hidden");
     }
+    card.likes.forEach(user => {
+      if(user._id === data._id) {
+        newCard.querySelector(".element__like-button").classList.add("element-like-button_active");
+      }
+    })
   });
   cardsSection.addItem(newCard);
 }

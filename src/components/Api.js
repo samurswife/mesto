@@ -79,9 +79,6 @@ export default class Api {
       }
       return Promise.reject(`Ошибка: ${res.status}`);
     })
-    // .then(data => {
-    //   return data;
-    // })
     .catch(err => {
       console.log(err);
     });
@@ -112,6 +109,44 @@ export default class Api {
 
   deleteCard(card){
     return fetch(`${this._url}/cards/${card._id}`, {
+      method: "DELETE",
+      headers: this._headers,
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    })
+    .then(data => {
+      return data;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }
+
+  likeCard(card){
+    return fetch(`${this._url}/cards/likes/${card._id}`, {
+      method: "PUT",
+      headers: this._headers,
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    })
+    .then(data => {
+      return data;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }
+
+  dislikeCard(card){
+    return fetch(`${this._url}/cards/likes/${card._id}`, {
       method: "DELETE",
       headers: this._headers,
     })

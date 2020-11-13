@@ -18,14 +18,14 @@ export default class Card {
   createCard() {
     this._card = this._getTemplate();
 
-    const cardImage = this._card.querySelector('.element__image');
-    const cardTitle = this._card.querySelector('.element__title');
-    const cardLikes = this._card.querySelector('.element__like-counter');
+    this._cardImage = this._card.querySelector('.element__image');
+    this._cardTitle = this._card.querySelector('.element__title');
+    this._cardLikes = this._card.querySelector('.element__like-counter');
 
-    cardTitle.textContent = this._name;
-    cardImage.style.backgroundImage = `url(${this._link})`;
-    cardImage.setAttribute("alt", this._name);
-    cardLikes.textContent = this._likes.length;
+    this._cardTitle.textContent = this._name;
+    this._cardImage.style.backgroundImage = `url(${this._link})`;
+    this._cardImage.setAttribute("alt", this._name);
+    this._cardLikes.textContent = this._likes.length;
 
     this._setEventListeners();
 
@@ -33,18 +33,24 @@ export default class Card {
   }
 
   _setEventListeners() {
-    this._card.querySelector(".element__like-button").addEventListener('click', (e) => this._handleLikeClick(this));
+    this._card.querySelector(".element__like-button").addEventListener('click', (e) => this._handleLikeClick(e, this));
 
     this._card.querySelector(".element__delete-button").addEventListener('click', (e) => this._handleDeleteIconClick(this));
 
     this._card.querySelector(".element__image").addEventListener('click', (e) => this._handleCardClick(e));
   }
 
-  like(e) {
-    e.target.classList.toggle("element-like-button_active");
+  increaseLikes(e, likes){
+    this._cardLikes.textContent = likes;
+    e.target.classList.add("element-like-button_active");
   }
 
-  deleteCard(e) {
+  decreaseLikes(e, likes){
+    this._cardLikes.textContent = likes;
+    e.target.classList.remove("element-like-button_active");
+  }
+
+  removeCard(e) {
     this._card.remove();
     this._card = null;
   }
