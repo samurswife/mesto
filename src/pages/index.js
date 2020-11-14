@@ -27,6 +27,14 @@ const api = new Api({
   }
 });
 
+//Обработка начального промиса
+const handleOriginalResponse = (res) => {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
 //Подсказка, что данные загружаются на сервер
 const renderLoading = (isLoading, button, initButtonText, loadingButtonText) => {
   if(isLoading){
@@ -38,14 +46,13 @@ const renderLoading = (isLoading, button, initButtonText, loadingButtonText) => 
 
 //***Создание профиля пользователя ***//
 
-const userProfile = new UserInfo(profileElementsSelectors.profileName, profileElementsSelectors.profileAbout);
+const userProfile = new UserInfo(profileElementsSelectors.profileName, profileElementsSelectors.profileAbout, profileElementsSelectors.profileAvatar);
 
-//Загрузка данных пользователя на страницу с сервера
-api.loadUserInfo().then(data => {
-  document.querySelector(profileElementsSelectors.profileName).textContent = data.name;
-  document.querySelector(profileElementsSelectors.profileAbout).textContent = data.about;
-  document.querySelector(profileElementsSelectors.profileAvatar).style.backgroundImage = `url("${data.avatar}")`;
-});
+//***Создание секции для карточек ***//
+
+const cardsSection = new Section({
+  renderer: renderCard
+}, cardsContainer);
 
 //***Создание попапов ***//
 
@@ -58,9 +65,8 @@ const popupUserInfoForm = new PopupWithForm({
   popupSelector: popupSelectors.popupUserInfoFormSelector,
   handleFormSubmit: (formData) => {
     renderLoading(true, buttonSelectors.submitProfileButton, "Сохранить", "Загрузка...");
-    api.updateUserInfo(formData).then(data => {
-      document.querySelector(profileElementsSelectors.profileName).textContent = data.name;
-      document.querySelector(profileElementsSelectors.profileAbout).textContent = data.about;
+    api.updateUserInfo(formData, handleOriginalResponse).then(data => {
+      userProfile.setUserInfo(data.name, data.about);
     })
     .then(() => {
       renderLoading(false, buttonSelectors.submitProfileButton, "Сохранить", "Загрузка...");
@@ -77,8 +83,8 @@ const popupUserAvatarForm = new PopupWithForm({
   popupSelector: popupSelectors.popupUserAvatarFormSelector,
   handleFormSubmit: (formData) => {
     renderLoading(true, buttonSelectors.addAvatarButton, "Сохранить", "Загрузка...");
-    api.updateUserAvatar(formData).then(data => {
-      document.querySelector(profileElementsSelectors.profileAvatar).style.backgroundImage = `url("${data.avatar}")`;
+    api.updateUserAvatar(formData, handleOriginalResponse).then(data => {
+      userProfile.setUserAvatar(data.avatar);
     })
     .then(() => {
       renderLoading(false, buttonSelectors.addAvatarButton, "Сохранить", "Загрузка...");
@@ -95,10 +101,16 @@ const popupAddCardForm = new PopupWithForm({
   popupSelector: popupSelectors.popupAddCardFormSelector,
   handleFormSubmit: (formData) => {
     renderLoading(true, buttonSelectors.addCardButton, "Создать", "Сохранение...");
-    api.uploadNewCard(formData)
-    .then((card) => renderCard(card))
+    Promise.all([
+      api.uploadNewCard(formData, handleOriginalResponse),
+      api.loadUserInfo(handleOriginalResponse)
+    ])
+    .then(([card, userData]) => renderCard(card, userData._id))
     .then(() => {
       renderLoading(false, buttonSelectors.addCardButton, "Создать", "Сохранение...");
+    })
+    .catch(err => {
+      console.log(err);
     })
     .finally(() => {
       popupAddCardForm.close();
@@ -117,7 +129,7 @@ popupConfirmDeletion.setEventListeners();
 //***Работа с карточками***//
 
 //Создание карточки
-const renderCard = (card) => {
+function renderCard (card, userId) {
   const cardElement = new Card({
     card: card,
     templateSelector: cardConfig.cardTemplate,
@@ -127,7 +139,7 @@ const renderCard = (card) => {
     handleDeleteIconClick: (card) => {
       const newHandleFormSubmit = () => {
         renderLoading(true, buttonSelectors.confirmButton, "Да", "Удаление...");
-        api.deleteCard(card)
+        api.deleteCard(card, handleOriginalResponse)
         .then(() => renderLoading(false, buttonSelectors.confirmButton, "Да", "Удаление"))
         .then(() => cardElement.removeCard())
         .finally(() => {
@@ -139,54 +151,60 @@ const renderCard = (card) => {
     },
     handleLikeClick: (e, card) => {
       if(card._likes.length === 0){
-        api.likeCard(card)
+        api.likeCard(card, handleOriginalResponse)
           .then(data => {
             card._likes = data.likes;
             cardElement.increaseLikes(e, data.likes.length);
           });
-        } else {
-          api.loadUserInfo(). then(data => {
-            card._likes.some(user => {
-              if(user._id === data._id) {
-                api.dislikeCard(card)
-                .then(data => {
-                  card._likes = data.likes;
-                  cardElement.decreaseLikes(e, data.likes.length);
-                }); //api.dislikeCard()
-              } else {
-                api.likeCard(card)
-                .then(data => {
-                  card._likes = data.likes;
-                  cardElement.increaseLikes(e, data.likes.length);
-                }); //api.likeCard()
-              }
-            }) //card._likes.forEach()
-          }) //api.loadUserInfo()
-        }
-      },
+      } else {
+        card._likes.some(user => {
+          if(user._id === userId) {
+            api.dislikeCard(card, handleOriginalResponse)
+            .then(data => {
+              card._likes = data.likes;
+              cardElement.decreaseLikes(e, data.likes.length);
+            }); //api.dislikeCard()
+          } else {
+            api.likeCard(card, handleOriginalResponse)
+            .then(data => {
+              card._likes = data.likes;
+              cardElement.increaseLikes(e, data.likes.length);
+            }); //api.likeCard()
+          }
+        }) //card._likes.forEach()
+      }
+    },
+    userId: userId
   });
 
   const newCard = cardElement.createCard();
 
-  api.loadUserInfo().then(data => {
-    if(data._id !== card.owner._id) {
-      newCard.querySelector(".element__delete-button").classList.add("element__delete-button_hidden");
+  if(userId !== card.owner._id) {
+    newCard.querySelector(".element__delete-button").classList.add("element__delete-button_hidden");
+  }
+
+  card.likes.forEach(user => {
+    if(user._id === userId) {
+      newCard.querySelector(".element__like-button").classList.add("element-like-button_active");
     }
-    card.likes.forEach(user => {
-      if(user._id === data._id) {
-        newCard.querySelector(".element__like-button").classList.add("element-like-button_active");
-      }
-    })
   });
+
   cardsSection.addItem(newCard);
 }
 
-//Отрисовка начальных карточек
-const cardsSection = new Section({
-  renderer: renderCard
-}, cardsContainer);
-
-api.loadInitialCards().then(res => cardsSection.renderItems(res));
+//***Загрузка начальных данных на страницу ***//
+Promise.all([
+  api.loadUserInfo(handleOriginalResponse),
+  api.loadInitialCards(handleOriginalResponse)
+])
+.then(([userData, initialCards]) => {
+  userProfile.setUserInfo(userData.name, userData.about);
+  userProfile.setUserAvatar(userData.avatar);
+  cardsSection.renderItems(initialCards, userData._id);
+})
+.catch(err => {
+  console.log(err);
+});
 
 //***Слушатели событий ***//
 

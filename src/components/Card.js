@@ -1,5 +1,6 @@
 export default class Card {
-  constructor({card, templateSelector, handleCardClick, handleDeleteIconClick, handleLikeClick}){
+  constructor({card, templateSelector, handleCardClick, handleDeleteIconClick, handleLikeClick, userId}){
+    this._userId = userId;
     this._name = card.name;
     this._link = card.link;
     this._likes = card.likes;
