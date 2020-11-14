@@ -4,17 +4,12 @@ export default class Api {
     this._headers = config.headers;
   }
 
-  loadUserInfo(){
+  loadUserInfo(handleOriginalResponse){
     return fetch(`${this._url}/users/me`, {
       method: "GET",
       headers: this._headers
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(handleOriginalResponse)
     .then(data => {
       return data;
     })
@@ -23,17 +18,12 @@ export default class Api {
     })
   }
 
-  loadInitialCards(){
+  loadInitialCards(handleOriginalResponse){
     return fetch(`${this._url}/cards`, {
       method: "GET",
       headers: this._headers
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(handleOriginalResponse)
     .then(data => {
       return data;
     })
@@ -42,7 +32,7 @@ export default class Api {
     })
   }
 
-  updateUserInfo(user){
+  updateUserInfo(user, handleOriginalResponse){
     return fetch(`${this._url}/users/me`, {
       method: "PATCH",
       headers: this._headers,
@@ -51,12 +41,7 @@ export default class Api {
         about: user.about
       })
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(handleOriginalResponse)
     .then(data => {
       return data;
     })
@@ -65,7 +50,7 @@ export default class Api {
     });
   }
 
-  updateUserAvatar(link){
+  updateUserAvatar(link, handleOriginalResponse){
     return fetch(`${this._url}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
@@ -73,18 +58,13 @@ export default class Api {
         avatar: link.avatar
       })
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(handleOriginalResponse)
     .catch(err => {
       console.log(err);
     });
   }
 
-  uploadNewCard(card){
+  uploadNewCard(card, handleOriginalResponse){
     return fetch(`${this._url}/cards`, {
       method: "POST",
       headers: this._headers,
@@ -93,12 +73,7 @@ export default class Api {
         link: card.link
       })
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(handleOriginalResponse)
     .then(data => {
       return data;
     })
@@ -107,17 +82,12 @@ export default class Api {
     });
   }
 
-  deleteCard(card){
+  deleteCard(card, handleOriginalResponse){
     return fetch(`${this._url}/cards/${card._id}`, {
       method: "DELETE",
       headers: this._headers,
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(handleOriginalResponse)
     .then(data => {
       return data;
     })
@@ -126,17 +96,12 @@ export default class Api {
     });
   }
 
-  likeCard(card){
+  likeCard(card, handleOriginalResponse){
     return fetch(`${this._url}/cards/likes/${card._id}`, {
       method: "PUT",
       headers: this._headers,
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(handleOriginalResponse)
     .then(data => {
       return data;
     })
@@ -145,17 +110,12 @@ export default class Api {
     });
   }
 
-  dislikeCard(card){
+  dislikeCard(card, handleOriginalResponse){
     return fetch(`${this._url}/cards/likes/${card._id}`, {
       method: "DELETE",
       headers: this._headers,
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
+    .then(handleOriginalResponse)
     .then(data => {
       return data;
     })
