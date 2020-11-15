@@ -1,10 +1,17 @@
+const handleOriginalResponse = (res) => {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
 export default class Api {
   constructor(config) {
     this._url = config.baseUrl;
     this._headers = config.headers;
   }
 
-  loadUserInfo(handleOriginalResponse){
+  loadUserInfo(){
     return fetch(`${this._url}/users/me`, {
       method: "GET",
       headers: this._headers
@@ -18,7 +25,7 @@ export default class Api {
     })
   }
 
-  loadInitialCards(handleOriginalResponse){
+  loadInitialCards(){
     return fetch(`${this._url}/cards`, {
       method: "GET",
       headers: this._headers
@@ -32,7 +39,7 @@ export default class Api {
     })
   }
 
-  updateUserInfo(user, handleOriginalResponse){
+  updateUserInfo(user){
     return fetch(`${this._url}/users/me`, {
       method: "PATCH",
       headers: this._headers,
@@ -50,7 +57,7 @@ export default class Api {
     });
   }
 
-  updateUserAvatar(link, handleOriginalResponse){
+  updateUserAvatar(link){
     return fetch(`${this._url}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
@@ -64,7 +71,7 @@ export default class Api {
     });
   }
 
-  uploadNewCard(card, handleOriginalResponse){
+  uploadNewCard(card){
     return fetch(`${this._url}/cards`, {
       method: "POST",
       headers: this._headers,
@@ -82,7 +89,7 @@ export default class Api {
     });
   }
 
-  deleteCard(card, handleOriginalResponse){
+  deleteCard(card){
     return fetch(`${this._url}/cards/${card._id}`, {
       method: "DELETE",
       headers: this._headers,
@@ -96,7 +103,7 @@ export default class Api {
     });
   }
 
-  likeCard(card, handleOriginalResponse){
+  likeCard(card){
     return fetch(`${this._url}/cards/likes/${card._id}`, {
       method: "PUT",
       headers: this._headers,
@@ -110,7 +117,7 @@ export default class Api {
     });
   }
 
-  dislikeCard(card, handleOriginalResponse){
+  dislikeCard(card){
     return fetch(`${this._url}/cards/likes/${card._id}`, {
       method: "DELETE",
       headers: this._headers,

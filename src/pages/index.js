@@ -27,14 +27,6 @@ const api = new Api({
   }
 });
 
-//Обработка начального промиса
-const handleOriginalResponse = (res) => {
-  if (res.ok) {
-    return res.json();
-  }
-  return Promise.reject(`Ошибка: ${res.status}`);
-}
-
 //Подсказка, что данные загружаются на сервер
 const renderLoading = (isLoading, button, initButtonText, loadingButtonText) => {
   if(isLoading){
@@ -65,7 +57,7 @@ const popupUserInfoForm = new PopupWithForm({
   popupSelector: popupSelectors.popupUserInfoFormSelector,
   handleFormSubmit: (formData) => {
     renderLoading(true, buttonSelectors.submitProfileButton, "Сохранить", "Загрузка...");
-    api.updateUserInfo(formData, handleOriginalResponse).then(data => {
+    api.updateUserInfo(formData).then(data => {
       userProfile.setUserInfo(data.name, data.about);
     })
     .then(() => {
@@ -83,7 +75,7 @@ const popupUserAvatarForm = new PopupWithForm({
   popupSelector: popupSelectors.popupUserAvatarFormSelector,
   handleFormSubmit: (formData) => {
     renderLoading(true, buttonSelectors.addAvatarButton, "Сохранить", "Загрузка...");
-    api.updateUserAvatar(formData, handleOriginalResponse).then(data => {
+    api.updateUserAvatar(formData).then(data => {
       userProfile.setUserAvatar(data.avatar);
     })
     .then(() => {
@@ -102,8 +94,8 @@ const popupAddCardForm = new PopupWithForm({
   handleFormSubmit: (formData) => {
     renderLoading(true, buttonSelectors.addCardButton, "Создать", "Сохранение...");
     Promise.all([
-      api.uploadNewCard(formData, handleOriginalResponse),
-      api.loadUserInfo(handleOriginalResponse)
+      api.uploadNewCard(formData),
+      api.loadUserInfo()
     ])
     .then(([card, userData]) => renderCard(card, userData._id))
     .then(() => {
@@ -139,7 +131,7 @@ function renderCard (card, userId) {
     handleDeleteIconClick: (card) => {
       const newHandleFormSubmit = () => {
         renderLoading(true, buttonSelectors.confirmButton, "Да", "Удаление...");
-        api.deleteCard(card, handleOriginalResponse)
+        api.deleteCard(card)
         .then(() => renderLoading(false, buttonSelectors.confirmButton, "Да", "Удаление"))
         .then(() => cardElement.removeCard())
         .finally(() => {
@@ -151,7 +143,7 @@ function renderCard (card, userId) {
     },
     handleLikeClick: (e, card) => {
       if(card._likes.length === 0){
-        api.likeCard(card, handleOriginalResponse)
+        api.likeCard(card)
           .then(data => {
             card._likes = data.likes;
             cardElement.increaseLikes(e, data.likes.length);
@@ -159,13 +151,13 @@ function renderCard (card, userId) {
       } else {
         card._likes.some(user => {
           if(user._id === userId) {
-            api.dislikeCard(card, handleOriginalResponse)
+            api.dislikeCard(card)
             .then(data => {
               card._likes = data.likes;
               cardElement.decreaseLikes(e, data.likes.length);
             }); //api.dislikeCard()
           } else {
-            api.likeCard(card, handleOriginalResponse)
+            api.likeCard(card)
             .then(data => {
               card._likes = data.likes;
               cardElement.increaseLikes(e, data.likes.length);
@@ -194,8 +186,8 @@ function renderCard (card, userId) {
 
 //***Загрузка начальных данных на страницу ***//
 Promise.all([
-  api.loadUserInfo(handleOriginalResponse),
-  api.loadInitialCards(handleOriginalResponse)
+  api.loadUserInfo(),
+  api.loadInitialCards()
 ])
 .then(([userData, initialCards]) => {
   userProfile.setUserInfo(userData.name, userData.about);
