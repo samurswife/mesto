@@ -201,7 +201,6 @@ Promise.all([
   userProfile.setUserInfo(userData.name, userData.about);
   userProfile.setUserAvatar(userData.avatar);
   cardsSection.renderItems(initialCards, userData._id);
-  setUserId(userData._id);
 })
 .catch(err => {
   console.log(err);
