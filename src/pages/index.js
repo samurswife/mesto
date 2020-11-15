@@ -18,7 +18,6 @@ import UserInfo from "../components/UserInfo.js"
 import FormValidator from "../components/FormValidator.js";
 
 //***Создание класса Api***/
-
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-17',
   headers: {
@@ -39,6 +38,7 @@ const renderLoading = (isLoading, button, initButtonText, loadingButtonText) => 
 //***Создание профиля пользователя ***//
 
 const userProfile = new UserInfo(profileElementsSelectors.profileName, profileElementsSelectors.profileAbout, profileElementsSelectors.profileAvatar);
+let userId = null;
 
 //***Создание секции для карточек ***//
 
@@ -93,11 +93,9 @@ const popupAddCardForm = new PopupWithForm({
   popupSelector: popupSelectors.popupAddCardFormSelector,
   handleFormSubmit: (formData) => {
     renderLoading(true, buttonSelectors.addCardButton, "Создать", "Сохранение...");
-    Promise.all([
-      api.uploadNewCard(formData),
-      api.loadUserInfo()
-    ])
-    .then(([card, userData]) => renderCard(card, userData._id))
+
+    api.uploadNewCard(formData)
+    .then((card) => renderCard(card, userId))
     .then(() => {
       renderLoading(false, buttonSelectors.addCardButton, "Создать", "Сохранение...");
     })
@@ -193,6 +191,7 @@ Promise.all([
   userProfile.setUserInfo(userData.name, userData.about);
   userProfile.setUserAvatar(userData.avatar);
   cardsSection.renderItems(initialCards, userData._id);
+  userId = userData._id;
 })
 .catch(err => {
   console.log(err);
